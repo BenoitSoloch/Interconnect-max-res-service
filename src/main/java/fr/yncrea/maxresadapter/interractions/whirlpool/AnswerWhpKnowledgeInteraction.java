@@ -14,13 +14,13 @@ import java.util.Optional;
 public class AnswerWhpKnowledgeInteraction extends AnswerKnowledgeInteraction {
 
     private final Logger log = LogManager.getLogger();
-    protected AnswerWhpKnowledgeInteraction(@Value("${graphpattern.whirlpoolappliances}") String resultPattern) {
+    protected AnswerWhpKnowledgeInteraction(@Value("${graphpattern.test}") String resultPattern) {
         super(resultPattern);
     }
 
     @Override
     public Optional<List<Map<String, String>>> handle(List<Map<String, String>> request) {
-        log.info("Results received: " + request);
+        log.info("[ ANSWER ] Results received: " + request);
         return Optional.empty();
     }
 }

@@ -2,6 +2,8 @@ package fr.yncrea.maxresadapter.graphpattern;
 
 import fr.yncrea.maxresadapter.models.ResultModel;
 import fr.yncrea.maxresadapter.models.StopDeviceModel;
+import fr.yncrea.maxresadapter.models.inetum.DeletionInetumModel;
+import fr.yncrea.maxresadapter.models.inetum.RegistrationInetumModel;
 import fr.yncrea.maxresadapter.models.whirlpool.AskWhirlpoolModel;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.sparql.core.Var;
@@ -53,6 +55,18 @@ public class BindingSetMapper {
                 .collect(Collectors.toList());
     }
 
+    public List<Map<String, String>> mapActuationsToBindingRegistrationInetum(List<RegistrationInetumModel> registrationDevices) {
+        return registrationDevices.stream()
+                .map(this::mapActuationToBindingInetumRegistration)
+                .collect(Collectors.toList());
+    }
+
+    public List<Map<String, String>> mapActuationsToBindingDeletionInetum(List<DeletionInetumModel> deletionDevices) {
+        return deletionDevices.stream()
+                .map(this::mapActuationToBindingInetumDeletion)
+                .collect(Collectors.toList());
+    }
+
     public List<Map<String, String>> mapActuationsToBindingSetsResult(List<ResultModel> resultModels) {
         log.debug("Mapping {} to bindingsets", resultModels);
         return resultModels.stream()
@@ -89,6 +103,26 @@ public class BindingSetMapper {
         map.put("token", doubleQuoteXMLSchema(askModel.token(), "string"));
         return map;
     }
+
+    private Map<String, String> mapActuationToBindingInetumRegistration(RegistrationInetumModel registrationModel) {
+        Map<String, String> map = new HashMap<>();
+        map.put("building", sarefValue(registrationModel.building()));
+        map.put("buildingSpace", sarefValue(registrationModel.buildingSpace()));
+        map.put("device", sarefValue(registrationModel.device()));
+        map.put("classification", doubleQuoteXMLSchema(registrationModel.classification(), "string"));
+        map.put("description", doubleQuoteXMLSchema(registrationModel.description(), "string"));
+        map.put("serviceProviderEMSOwner", doubleQuoteXMLSchema(registrationModel.serviceProviderEMSOwner(), "string"));
+        return map;
+    }
+
+    private Map<String, String> mapActuationToBindingInetumDeletion(DeletionInetumModel deletionModel) {
+        Map<String, String> map = new HashMap<>();
+        map.put("building", sarefValue(deletionModel.building()));
+        map.put("buildingSpace", sarefValue(deletionModel.buildingSpace()));
+        map.put("device", sarefValue(deletionModel.device()));
+        return map;
+    }
+
     /*
         private String doubleQuote(String string, String type) {
             return String.format("\"%s\"^^xsd:%s", string, type);
