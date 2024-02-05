@@ -4,6 +4,7 @@ import fr.yncrea.maxresadapter.models.ResultModel;
 import fr.yncrea.maxresadapter.models.StopDeviceModel;
 import fr.yncrea.maxresadapter.models.inetum.DeletionInetumModel;
 import fr.yncrea.maxresadapter.models.inetum.RegistrationInetumModel;
+import fr.yncrea.maxresadapter.models.trialog.DynamicTarifModel;
 import fr.yncrea.maxresadapter.models.whirlpool.AskWhirlpoolModel;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.sparql.core.Var;
@@ -52,6 +53,13 @@ public class BindingSetMapper {
         log.debug("Mapping {} to bindingsets", stopDevices);
         return stopDevices.stream()
                 .map(this::mapActuationToBindingAskWhirlpool)
+                .collect(Collectors.toList());
+    }
+
+    public List<Map<String, String>> mapActuationsToBindingDynamicTarif(List<DynamicTarifModel> dynamicTarif) {
+        log.debug("Mapping {} to bindingsets", dynamicTarif);
+        return dynamicTarif.stream()
+                .map(this::mapActuationToBindingTrialogDynamicTarif)
                 .collect(Collectors.toList());
     }
 
@@ -120,6 +128,23 @@ public class BindingSetMapper {
         map.put("building", sarefValue(deletionModel.building()));
         map.put("buildingSpace", sarefValue(deletionModel.buildingSpace()));
         map.put("device", sarefValue(deletionModel.device()));
+        return map;
+    }
+
+    private Map<String, String> mapActuationToBindingTrialogDynamicTarif(DynamicTarifModel dynamicTarif) {
+        Map<String, String> map = new HashMap<>();
+        map.put("costValue", doubleQuote(dynamicTarif.costValue(), "double"));
+        map.put("beginDateTime", doubleQuote(dynamicTarif.beginDateTime(), "dateTime"));
+        map.put("endDateTime", doubleQuote(dynamicTarif.endDateTime(), "dateTime"));
+        map.put("building", sarefValue(dynamicTarif.building()));
+        map.put("dp", sarefValue(dynamicTarif.dp()));
+        map.put("beginning", sarefValue(dynamicTarif.beginning()));
+        map.put("end", sarefValue(dynamicTarif.end()));
+        map.put("fc", sarefValue(dynamicTarif.fc()));
+        map.put("q", sarefValue(dynamicTarif.q()));
+        map.put("timestamp", sarefValue(dynamicTarif.timestamp()));
+        map.put("ts", sarefValue(dynamicTarif.ts()));
+        map.put("value", sarefValue(dynamicTarif.value()));
         return map;
     }
 

@@ -32,7 +32,7 @@
 			<dependency>
 				<groupId>world.inetum.dr</groupId>
 				<artifactId>knowledge-engine-adapter</artifactId>
-				<version>GA-2.1.1</version>
+				<version>GA-2.1.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -54,10 +54,22 @@
 		<repository>
 			<id>Interconnect</id>
 			<url>https://pkgs.dev.azure.com/R-DevOpsFactory/749e9d9e-ecb9-4dd1-90c8-41d54d4a33c1/_packaging/Interconnect/maven/v1</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
 		</repository>
 	</distributionManagement>
 
 	<dependencies>
+<!--		<dependency>-->
+<!--			<groupId>world.inetum.dr</groupId>-->
+<!--			<artifactId>knowledge-engine-adapter</artifactId>-->
+<!--			<version>GA-2.1.2</version>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>world.inetum.dr</groupId>
 			<artifactId>knowledge-engine-adapter</artifactId>

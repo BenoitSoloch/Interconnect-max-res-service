@@ -1,8 +1,8 @@
 package fr.yncrea.maxresadapter.controllers;
 
 import fr.yncrea.maxresadapter.graphpattern.BindingSetMapper;
-import fr.yncrea.maxresadapter.interractions.inetum.PostDeviceDeletionInteraction;
-import fr.yncrea.maxresadapter.interractions.inetum.PostDeviceRegistrationInteraction;
+//import fr.yncrea.maxresadapter.interractions.inetum.PostDeviceDeletionInteraction;
+//import fr.yncrea.maxresadapter.interractions.inetum.PostDeviceRegistrationInteraction;
 import fr.yncrea.maxresadapter.interractions.whirlpool.AskWhpKnowledgeInteraction;
 import fr.yncrea.maxresadapter.models.ApplianceModel;
 import fr.yncrea.maxresadapter.models.inetum.DeletionInetumModel;
@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import world.inetum.dr.knowledge_engine.adapter.interactions.ProactiveClient;
 
-import javax.validation.Valid;
+//import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,17 +27,30 @@ import java.util.Map;
 //@RequestMapping("/api")
 public class Controller {
     private final ProactiveClient knowledgeEngineClient;
-    private final PostDeviceRegistrationInteraction inetumRegistrationInteraction;
-    private final PostDeviceDeletionInteraction inetumDeletionInteraction;
+//    private final PostDeviceRegistrationInteraction inetumRegistrationInteraction;
+//    private final PostDeviceDeletionInteraction inetumDeletionInteraction;
     private final AskWhpKnowledgeInteraction whpKI;
     private final BindingSetMapper bindingSetMapper;
     private List<String> alreadyRegisteredAppliancesAddress;
     private String token;
     private final Logger log = LogManager.getLogger();
-    public Controller(ProactiveClient knowledgeEngineClient, PostDeviceRegistrationInteraction inetumRegistrationInteraction, PostDeviceDeletionInteraction inetumDeletionInteraction, AskWhpKnowledgeInteraction whpKI, BindingSetMapper bindingSetMapper) {
+//    public Controller(ProactiveClient knowledgeEngineClient, PostDeviceRegistrationInteraction inetumRegistrationInteraction, PostDeviceDeletionInteraction inetumDeletionInteraction, AskWhpKnowledgeInteraction whpKI, BindingSetMapper bindingSetMapper) {
+//        this.knowledgeEngineClient = knowledgeEngineClient;
+//        this.inetumRegistrationInteraction = inetumRegistrationInteraction;
+//        this.inetumDeletionInteraction = inetumDeletionInteraction;
+//        this.whpKI = whpKI;
+//        this.bindingSetMapper = bindingSetMapper;
+//        this.alreadyRegisteredAppliancesAddress = new ArrayList<>();
+//    }
+
+    public Controller(ProactiveClient knowledgeEngineClient,
+//                      PostDeviceRegistrationInteraction inetumRegistrationInteraction,
+//                      PostDeviceDeletionInteraction inetumDeletionInteraction,
+                      AskWhpKnowledgeInteraction whpKI,
+                      BindingSetMapper bindingSetMapper) {
         this.knowledgeEngineClient = knowledgeEngineClient;
-        this.inetumRegistrationInteraction = inetumRegistrationInteraction;
-        this.inetumDeletionInteraction = inetumDeletionInteraction;
+//        this.inetumRegistrationInteraction = inetumRegistrationInteraction;
+//        this.inetumDeletionInteraction = inetumDeletionInteraction;
         this.whpKI = whpKI;
         this.bindingSetMapper = bindingSetMapper;
         this.alreadyRegisteredAppliancesAddress = new ArrayList<>();
@@ -90,7 +103,7 @@ public class Controller {
     public ResponseEntity<Object> postRegistration(
 //            @RequestParam("pdl") String pdl,
 //            @RequestParam("pdl") TestModel appliances
-            @Valid  @RequestBody List<ApplianceModel> appliances
+            @RequestBody List<ApplianceModel> appliances
 //            @Valid  @RequestBody TestModel appliances
     ) {
         // TODO
@@ -147,54 +160,38 @@ public class Controller {
         }
 
         if(!registrationList.isEmpty()){
-            PostResult postResult = this.knowledgeEngineClient.post(inetumRegistrationInteraction, bindingSetMapper.mapActuationsToBindingRegistrationInetum(registrationList));
-            log.info("Post result from Registration: " + postResult);
+//            PostResult postResult = this.knowledgeEngineClient.post(inetumRegistrationInteraction, bindingSetMapper.mapActuationsToBindingRegistrationInetum(registrationList));
+//            log.info("Post result from Registration: " + postResult);
         }
 
         if(!deletionList.isEmpty()){
-            PostResult postResult =this.knowledgeEngineClient.post(inetumDeletionInteraction, bindingSetMapper.mapActuationsToBindingDeletionInetum(deletionList));
+//            PostResult postResult =this.knowledgeEngineClient.post(inetumDeletionInteraction, bindingSetMapper.mapActuationsToBindingDeletionInetum(deletionList));
         }
 
         log.info("- Send registration to Whirpool");
-//        this.knowledgeEngineClient.ask();
 
         return ResponseEntity.ok(null);
     }
 
-    @GetMapping(path = "/whp-test")
+    @GetMapping(path = "/whp-get-devices")
     public ResponseEntity<?> getTest() {
         log.info("Test ASK request");
 
         AskWhirlpoolModel model = new AskWhirlpoolModel(
-                "123",
-                "123",
-                "123"
+                "https://www.example.org/appliances",
+                "FR-Kpq1z",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjIyNjU3NiwiUm9sZU5hbWUiOiJTVEFOREFSRF9VU0VSIiwiY29tcGFueUlkIjowLCJVc2VyTmFtZSI6IkJlbm_DrnRTb2xvY2giLCJ1c2VyX25hbWUiOiJCRU5PSVQuU09MT0NIQFlOQ1JFQS5GUiIsInNjb3BlIjpbInRydXN0IiwicmVhZCIsIndyaXRlIl0sImV4cCI6MTY4NDg1MzExNSwiYXV0aG9yaXRpZXMiOlsiU1RBTkRBUkRfVVNFUiJdLCJqdGkiOiJjNGU2MmY0Yy1mMTcwLTRhYmEtYmE0YS1hYTI3NjgwNGE2MzEiLCJjbGllbnRfaWQiOiJzcnZzeXN3Y2VtZWEiLCJTQUlEIjpbIldQUjRXSzRLR0wzMzQiXX0.Iu4-936Yd4JcX51WWyO4qAnZWlP2uTeeThXxWKetR24"
         );
 
         List<AskWhirlpoolModel> list = new ArrayList<>();
         list.add(model);
 
-        log.info("Model: " + model);
-        log.info("List model: " + bindingSetMapper.mapActuationsToBindingAskWhirlpool(list));
+//        log.info("Model: " + model);
+//        log.info("List model: " + bindingSetMapper.mapActuationsToBindingAskWhirlpool(list));
 
-        Map<String, String> mapp = new HashMap<>();
-        mapp.put("appliances", "qsdf");
-        mapp.put("playerid", "qsdf");
-        mapp.put("token", "qsdf");
-//        mapp.put("deviceAddress", "qsdf");
-//        mapp.put("type", "qsdf");
-//        mapp.put("name", "qsdf");
-//        mapp.put("registered", "qsdf");
-//        mapp.put("brand", "qsdf");
-        List<Map<String, String>> listt = new ArrayList<>();
-        listt.add(mapp);
+        AskResult result = this.knowledgeEngineClient.ask(this.whpKI, bindingSetMapper.mapActuationsToBindingAskWhirlpool(list));
+        log.info("Result: " + result.getBindingSet());
 
-        log.info("Listt: " + listt);
-
-        AskResult result = this.knowledgeEngineClient.ask(this.whpKI, listt);
-//        AskResult result = this.knowledgeEngineClient.ask(this.whpKI, bindingSetMapper.mapActuationsToBindingAskWhirlpool(list));
-        log.info("Result: " + result);
-
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(result.getBindingSet());
     }
 }

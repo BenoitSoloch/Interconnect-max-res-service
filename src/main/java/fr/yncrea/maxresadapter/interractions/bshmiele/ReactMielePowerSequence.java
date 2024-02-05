@@ -1,4 +1,4 @@
-package fr.yncrea.maxresadapter.interractions.trialog;
+package fr.yncrea.maxresadapter.interractions.bshmiele;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,11 +11,10 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
-public class ReactStatusNotificationInteraction extends ReactKnowledgeInteraction {
-
+public class ReactMielePowerSequence  extends ReactKnowledgeInteraction {
     private final Logger log = LogManager.getLogger();
-    protected ReactStatusNotificationInteraction(@Value("${graphpattern.statusnotification}") String argumentPattern,
-                                                 @Value("${graphpattern.result}") String result) {
+    protected ReactMielePowerSequence(@Value("${graphpattern.powersequence}") String argumentPattern,
+                                       @Value("${graphpattern.result}") String result) {
         super(argumentPattern, result);
     }
 
