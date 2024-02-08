@@ -6,6 +6,7 @@ import fr.yncrea.maxresadapter.models.inetum.DeletionInetumModel;
 import fr.yncrea.maxresadapter.models.inetum.RegistrationInetumModel;
 import fr.yncrea.maxresadapter.models.trialog.DynamicTarifModel;
 import fr.yncrea.maxresadapter.models.whirlpool.AskWhirlpoolModel;
+import fr.yncrea.maxresadapter.models.whirlpool.RegistrationWhirlpoolModel;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.sparql.core.Var;
 import org.apache.jena.sparql.engine.binding.Binding;
@@ -53,6 +54,13 @@ public class BindingSetMapper {
         log.debug("Mapping {} to bindingsets", stopDevices);
         return stopDevices.stream()
                 .map(this::mapActuationToBindingAskWhirlpool)
+                .collect(Collectors.toList());
+    }
+
+    public List<Map<String, String>> mapActuationsToBindingRegisterWhirlpool(List<RegistrationWhirlpoolModel> registerDevices) {
+        log.debug("Mapping {} to bindingsets", registerDevices);
+        return registerDevices.stream()
+                .map(this::mapActuationToBindingRegisterWhirlpool)
                 .collect(Collectors.toList());
     }
 
@@ -109,6 +117,16 @@ public class BindingSetMapper {
         map.put("appliances", sarefValue(askModel.appliances()));
         map.put("playerid", doubleQuoteXMLSchema(askModel.playerid(), "string"));
         map.put("token", doubleQuoteXMLSchema(askModel.token(), "string"));
+        return map;
+    }
+
+    private Map<String, String> mapActuationToBindingRegisterWhirlpool(RegistrationWhirlpoolModel registerModel) {
+        Map<String, String> map = new HashMap<>();
+        map.put("register", sarefValue(registerModel.register()));
+        map.put("playerid", doubleQuoteXMLSchema(registerModel.playerid(), "string"));
+        map.put("deviceAddress", doubleQuoteXMLSchema(registerModel.deviceAddress(), "string"));
+        map.put("token", doubleQuoteXMLSchema(registerModel.token(), "string"));
+        map.put("registered", doubleQuoteXMLSchema(String.valueOf(registerModel.registered()), "boolean"));
         return map;
     }
 
